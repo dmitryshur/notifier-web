@@ -1,0 +1,30 @@
+.Input__element {
+  display: block;
+  border: 0;
+  border-bottom: 1px solid #515f77;
+  margin: 8px 0;
+  background-color: transparent;
+  color: #fff;
+  transition: border 300ms ease-out;
+}
+
+.Input__element::placeholder {
+  opacity: 1;
+  color: #515f77;
+}
+
+.Input__element:focus {
+  outline: none;
+  border-bottom: 1px solid #5bcebf;
+}
+
+.Input__error-text {
+  font-size: 0.8rem;
+  color: #922020;
+}
+
+.Input__helper-text {
+  font-size: 0.8rem;
+  color: #515f77;
+}
+

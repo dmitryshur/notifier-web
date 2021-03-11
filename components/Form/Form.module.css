@@ -1,0 +1,48 @@
+.Form {
+  width: 50%;
+  background: linear-gradient(to bottom, #243b55, #141e30);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+}
+
+.Form__text {
+  padding: 0 32px;
+    color: #fff;
+  line-height: 1.6rem;
+}
+
+.Form h1 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #5bcebf;
+  text-align: center;
+    margin: 2rem;
+}
+
+.Form p {
+  text-align: left;
+}
+
+.Form ol {
+  text-align: left;
+}
+
+.Form__inputs {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 320px;
+}
+
+.Form__input {
+  width: 320px;
+}
+
+.Form__inputs > * {
+  margin: 16px 0;
+}
