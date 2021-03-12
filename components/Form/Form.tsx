@@ -17,7 +17,11 @@ function Form(props: FormProps) {
   function isFormValid(): boolean {
     const validationErrors = { interval: '', url: '' };
 
-    if (Number(intervalValue) < 5 || Number(intervalValue) > MAX_INTERVAL) {
+    if (
+      Number(intervalValue) < 5 ||
+      Number(intervalValue) > MAX_INTERVAL ||
+      Number(intervalValue) % 5 !== 0
+    ) {
       validationErrors.interval =
         'Interval must be in range 5-604,800 (week in seconds) and a multiple of 5';
     }
@@ -76,20 +80,20 @@ function Form(props: FormProps) {
           NotifyMe! is a service which allows you to be notified via our Telegram bot when a
           Javascript script, provided by you, successfully executes and returns 'true' <br /> How to
           get started:
-          <ol>
-            <li>Fill in the interval value in seconds between 5 - 604,800</li>
-            <li>Fill in the URL of the website your script should on</li>
-            <li>Submit the data by clicking the SUBMIT button</li>
-            <li>
-              A new Telegram button should appear. Click it. This should start a conversation with
-              our bot
-            </li>
-          </ol>
-          Your script should now be executed on our server every N number of seconds, where N is the
-          number you specified.
-          <br /> To view the available commands of our bot, you can use the
-          <strong> /help</strong> command in its chat.
         </p>
+        <ol>
+          <li>Fill in the interval value in seconds between 5 - 604,800</li>
+          <li>Fill in the URL of the website your script should on</li>
+          <li>Submit the data by clicking the SUBMIT button</li>
+          <li>
+            A new Telegram button should appear. Click it. This should start a conversation with our
+            bot
+          </li>
+        </ol>
+        Your script should now be executed on our server every N number of seconds, where N is the
+        number you specified.
+        <br /> To view the available commands of our bot, you can use the
+        <strong> /help</strong> command in its chat.
       </div>
       <div className={styles['Form__inputs']}>
         <Input

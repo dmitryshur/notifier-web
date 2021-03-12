@@ -11,7 +11,7 @@
 
 .Form__text {
   padding: 0 32px;
-    color: #fff;
+  color: #dfdfdf;
   line-height: 1.6rem;
 }
 
@@ -20,7 +20,7 @@
   font-weight: 900;
   color: #5bcebf;
   text-align: center;
-    margin: 2rem;
+  margin: 2rem;
 }
 
 .Form p {
