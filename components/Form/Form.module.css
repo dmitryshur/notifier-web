@@ -46,3 +46,7 @@
 .Form__inputs > * {
   margin: 16px 0;
 }
+
+.Form__errors {
+  color: #922020;
+}

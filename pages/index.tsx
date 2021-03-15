@@ -14,11 +14,15 @@ const defaultScriptValue = `// All your code should be written here
 
 export default function Home() {
   const [scriptValue, setScriptValue] = useState(defaultScriptValue);
+  const [errors, setErrors] = useState([]);
 
   function handleSubmit({ interval, url }: { interval: number; url: string }) {
-    console.log(interval);
-    console.log(url);
-    console.log(scriptValue);
+    const script = scriptValue.replace(defaultScriptValue, '');
+
+    if (script.length > 10_000) {
+      setErrors(['The script is too long. The maximum length is 10,000.']);
+      return;
+    }
   }
 
   return (
@@ -33,7 +37,7 @@ export default function Home() {
       </Head>
       <div className={styles.Home}>
         <Editor value={scriptValue} onChange={setScriptValue} />
-        <Form onSubmit={handleSubmit} />
+        <Form onSubmit={handleSubmit} errors={errors} />
       </div>
     </>
   );

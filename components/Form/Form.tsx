@@ -6,6 +6,7 @@ import styles from './Form.module.css';
 const MAX_INTERVAL = 604_800;
 
 interface FormProps {
+  errors: Array<string>;
   onSubmit: ({ interval, url }: { interval: number; url: string }) => void;
 }
 
@@ -65,7 +66,6 @@ function Form(props: FormProps) {
     setUrlValue(value);
   }
 
-  // TODO error msgs will be passed to the inputs here
   function handleSubmit() {
     if (isFormValid()) {
       props.onSubmit({ interval: Number(intervalValue), url: urlValue });
@@ -112,6 +112,13 @@ function Form(props: FormProps) {
           value={urlValue}
           onChange={handleUrlChange}
         />
+        {props.errors.length > 0 && (
+          <div className={styles['Form__errors']}>
+            {props.errors.map(error => (
+              <div className={styles['Form__error']}>{error}</div>
+            ))}
+          </div>
+        )}
       </div>
       <Button disabled={!intervalValue || !urlValue} onClick={handleSubmit}>
         SUBMIT

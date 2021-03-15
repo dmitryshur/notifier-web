@@ -1,4 +1,12 @@
 .Editor {
-    width: 50%;
-    height: 100%;
+  width: 50%;
+  height: 100%;
+  position: relative;
+}
+
+.Editor__counter {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  color: #dfdfdf;
 }
