@@ -10,3 +10,10 @@
   right: 32px;
   color: #dfdfdf;
 }
+
+@media (max-width: 1024px) {
+  .Editor {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,10 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useReducer } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import { create } from 'api/create';
 import Form from 'components/Form/Form';
 import styles from './index.module.css';
 
-const Editor = dynamic(() => import('components/Editor/Editor'), { ssr: false });
+const Editor = dynamic(() => import('components/Editor/Editor'), {
+  ssr: false,
+  loading: () => <div className={styles['Home__loader']} />,
+});
 
 const defaultScriptValue = `// All your code should be written here
 // The script should return either 'true' or 'false'.
@@ -12,17 +16,70 @@ const defaultScriptValue = `// All your code should be written here
 // notified via our Telegram bot
 `;
 
-export default function Home() {
-  const [scriptValue, setScriptValue] = useState(defaultScriptValue);
-  const [errors, setErrors] = useState([]);
+const initialState = {
+  scriptValue: defaultScriptValue,
+  errors: [],
+  scriptId: '',
+  isFetching: false,
+};
 
-  function handleSubmit({ interval, url }: { interval: number; url: string }) {
-    const script = scriptValue.replace(defaultScriptValue, '');
+function reducer(state = initialState, action) {
+  switch (action.type) {
+    case 'SCRIPT_CHANGED':
+      return { ...state, scriptValue: action.payload };
+
+    case 'FETCH_CREATE':
+      return { ...state, isFetching: true, errors: [] };
+
+    case 'FETCH_CREATE_SUCCESS':
+      return { ...state, isFetching: false, scriptId: action.payload };
+
+    case 'FETCH_CREATE_FAILURE':
+      return { ...state, isFetching: false, errors: action.payload };
+
+    case 'VALIDATION_ERRORS':
+      return { ...state, errors: action.payload };
+  }
+}
+
+export default function Home() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  async function fetchCreate({
+    url,
+    interval,
+    script,
+  }: {
+    url: string;
+    interval: number;
+    script: string;
+  }) {
+    dispatch({ type: 'FETCH_CREATE' });
+
+    try {
+      const { id } = await create({ url, interval, script });
+      dispatch({ type: 'FETCH_CREATE_SUCCESS', payload: id });
+    } catch (error) {
+      dispatch({ type: 'FETCH_CREATE_FAILURE', payload: [error] });
+    }
+  }
+
+  function handleScriptChange(value: string) {
+    dispatch({ type: 'SCRIPT_CHANGED', payload: value });
+  }
+
+  async function handleSubmit({ interval, url }: { interval: number; url: string }) {
+    const script = state.scriptValue.replace(defaultScriptValue, '');
 
     if (script.length > 10_000) {
-      setErrors(['The script is too long. The maximum length is 10,000.']);
+      dispatch({
+        type: 'VALIDATION_ERRORS',
+        payload: ['The script is too long. The maximum length is 10,000.'],
+      });
       return;
     }
+
+    fetchCreate({ url, interval, script });
   }
 
   return (
@@ -36,8 +93,13 @@ export default function Home() {
         />
       </Head>
       <div className={styles.Home}>
-        <Editor value={scriptValue} onChange={setScriptValue} />
-        <Form onSubmit={handleSubmit} errors={errors} />
+        <Form
+          isFetching={state.isFetching}
+          errors={state.errors}
+          scriptId={state.scriptId}
+          onSubmit={handleSubmit}
+        />
+        <Editor value={state.scriptValue} onChange={handleScriptChange} />
       </div>
     </>
   );

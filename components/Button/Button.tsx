@@ -1,8 +1,10 @@
 import React from 'react';
+import cn from 'classnames';
 import styles from './Button.module.css';
 
 interface ButtonProps {
-  children: string;
+  children: React.ReactElement;
+  className?: string;
   disabled?: boolean;
   onClick?: Function;
 }
@@ -15,7 +17,11 @@ function Button(props: ButtonProps) {
   }
 
   return (
-    <button className={styles['Button']} disabled={props.disabled} onClick={handleClick}>
+    <button
+      className={cn(styles['Button'], props.className)}
+      disabled={props.disabled}
+      onClick={handleClick}
+    >
       {props.children}
     </button>
   );

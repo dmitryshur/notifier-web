@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import cn from 'classnames';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 import styles from './Form.module.css';
@@ -6,6 +7,8 @@ import styles from './Form.module.css';
 const MAX_INTERVAL = 604_800;
 
 interface FormProps {
+  scriptId: string;
+  isFetching: boolean;
   errors: Array<string>;
   onSubmit: ({ interval, url }: { interval: number; url: string }) => void;
 }
@@ -72,6 +75,7 @@ function Form(props: FormProps) {
     }
   }
 
+  // TODO get bot name from env
   return (
     <div className={styles.Form}>
       <div className={styles['Form__text']}>
@@ -115,14 +119,31 @@ function Form(props: FormProps) {
         {props.errors.length > 0 && (
           <div className={styles['Form__errors']}>
             {props.errors.map(error => (
-              <div className={styles['Form__error']}>{error}</div>
+              <div key={error} className={styles['Form__error']}>
+                {error}
+              </div>
             ))}
           </div>
         )}
       </div>
-      <Button disabled={!intervalValue || !urlValue} onClick={handleSubmit}>
-        SUBMIT
-      </Button>
+      {props.scriptId ? (
+        <a
+          className={styles['Form__telegram-link']}
+          href={`https://t.me/TestingBot42_bot?start=${props.scriptId}`}
+        >
+          <Button className={cn(styles['Form__button'])}>
+            <img src="/images/telegram.svg" />
+          </Button>
+        </a>
+      ) : (
+        <Button
+          className={styles['Form__button']}
+          disabled={props.isFetching || !intervalValue || !urlValue}
+          onClick={handleSubmit}
+        >
+          <span>SUBMIT</span>
+        </Button>
+      )}
     </div>
   );
 }

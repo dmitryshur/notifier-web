@@ -5,3 +5,16 @@
   height: 100%;
   font-family: 'Roboto', sans-serif;
 }
+
+@media (max-width: 1024px) {
+  .Home {
+    flex-direction: column;
+  }
+}
+
+.Home__loader {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  background-color: #1d2021;
+}

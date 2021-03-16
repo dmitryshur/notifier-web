@@ -50,3 +50,23 @@
 .Form__errors {
   color: #922020;
 }
+
+.Form__button {
+  width: 140px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Form__telegram-link img {
+  width: 48px;
+  height: 48px;
+}
+
+@media (max-width: 1024px) {
+  .Form {
+    width: 100%;
+    height: auto;
+  }
+}
