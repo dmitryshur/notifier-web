@@ -8,6 +8,7 @@ const MAX_INTERVAL = 604_800;
 
 interface FormProps {
   scriptId: string;
+  botName: string;
   isFetching: boolean;
   errors: Array<string>;
   onSubmit: ({ interval, url }: { interval: number; url: string }) => void;
@@ -75,7 +76,6 @@ function Form(props: FormProps) {
     }
   }
 
-  // TODO get bot name from env
   return (
     <div className={styles.Form}>
       <div className={styles['Form__text']}>
@@ -129,7 +129,7 @@ function Form(props: FormProps) {
       {props.scriptId ? (
         <a
           className={styles['Form__telegram-link']}
-          href={`https://t.me/TestingBot42_bot?start=${props.scriptId}`}
+          href={`https://t.me/${props.botName}?start=${props.scriptId}`}
         >
           <Button className={cn(styles['Form__button'])}>
             <img src="/images/telegram.svg" />

@@ -10,6 +10,11 @@ const Editor = dynamic(() => import('components/Editor/Editor'), {
   loading: () => <div className={styles['Home__loader']} />,
 });
 
+interface HomeProps {
+  botName: string;
+  apiHost: string;
+}
+
 const defaultScriptValue = `// All your code should be written here
 // The script should return either 'true' or 'false'.
 // The moment this script returns 'true', you will be
@@ -42,7 +47,18 @@ function reducer(state = initialState, action) {
   }
 }
 
-export default function Home() {
+export async function getStaticProps() {
+  const { BOT_NAME, API_HOST } = process.env;
+
+  return {
+    props: {
+      botName: BOT_NAME,
+      apiHost: API_HOST,
+    },
+  };
+}
+
+export default function Home(props: HomeProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   async function fetchCreate({
@@ -57,7 +73,7 @@ export default function Home() {
     dispatch({ type: 'FETCH_CREATE' });
 
     try {
-      const { id } = await create({ url, interval, script });
+      const { id } = await create({ apiHost: props.apiHost, url, interval, script });
       dispatch({ type: 'FETCH_CREATE_SUCCESS', payload: id });
     } catch (error) {
       dispatch({ type: 'FETCH_CREATE_FAILURE', payload: [error] });
@@ -94,9 +110,10 @@ export default function Home() {
       </Head>
       <div className={styles.Home}>
         <Form
+          scriptId={state.scriptId}
+          botName={props.botName}
           isFetching={state.isFetching}
           errors={state.errors}
-          scriptId={state.scriptId}
           onSubmit={handleSubmit}
         />
         <Editor value={state.scriptValue} onChange={handleScriptChange} />

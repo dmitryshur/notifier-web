@@ -1,5 +1,4 @@
-// TODO use env variables
-const CREATE_URL = `http://localhost:4000/create`;
+const CREATE_URL = '{{API_HOST}}/create';
 
 interface ErrorResponse {
   type: 'error';
@@ -12,10 +11,12 @@ interface CreateResponse {
 }
 
 async function create({
+  apiHost,
   url,
   interval,
   script,
 }: {
+  apiHost: string;
   url: string;
   interval: number;
   script: string;
@@ -26,8 +27,9 @@ async function create({
     script,
   };
 
+  const apiUrl = CREATE_URL.replace('{{API_HOST}}', apiHost);
   try {
-    const response: ErrorResponse | CreateResponse = await fetch(CREATE_URL, {
+    const response: ErrorResponse | CreateResponse = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,6 +44,10 @@ async function create({
       return { id: response.id };
     }
   } catch (error) {
+    if (error instanceof TypeError) {
+      throw 'Server error. try again later';
+    }
+
     throw error;
   }
 }
