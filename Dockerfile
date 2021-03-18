@@ -11,7 +11,7 @@ RUN npm run build
 
 FROM nginx:1.19.8
 
-COPY --from=base /app/out/ /var/notifier
+COPY --from=base /app/out/ /var/www/notifier
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]
