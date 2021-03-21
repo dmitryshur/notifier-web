@@ -6,5 +6,5 @@
 
 # Production
 
-* Set the needed `env` variables in `.env.local`
-* `docker-compose up`. this will build the static files of the project and serve them via `nginx`
+* Provide the needed env variables: `BOT_NAME`, `API_HOST`
+* Build docker image and push to the registry  
