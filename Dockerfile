@@ -16,7 +16,7 @@ RUN npm run build
 
 FROM nginx:1.19.8
 
-EXPOSE 8080
+EXPOSE 80
 COPY --from=base /app/out/ /var/www/notifier
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
