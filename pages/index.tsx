@@ -61,7 +61,6 @@ export async function getStaticProps() {
 export default function Home(props: HomeProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  console.log('hello world');
   async function fetchCreate({
     url,
     interval,
