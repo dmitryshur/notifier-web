@@ -1,4 +1,4 @@
-const CREATE_URL = '{{API_HOST}}/create';
+const CREATE_URL = '{{API_HOST}}/api/create';
 
 interface ErrorResponse {
   type: 'error';
